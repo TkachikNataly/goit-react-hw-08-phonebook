@@ -1,27 +1,25 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 // import { useDispatch, useSelector } from 'react-redux';
 // import { nanoid } from 'nanoid';
 // import { addContact, getContacts } from 'redux/contactsSlice';
 import s from './Form.module.css';
+import sBtn from '../../App.module.css';
 // import PropTypes from 'prop-types';
-
-import { useAddContactMutation } from 'redux/contacts/contactsApi';
-import { useFetchContactsQuery } from 'redux/contacts/contactsApi';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useSelector, useDispatch } from 'react-redux';
+import { ContactsOperations, ContactsSelectors } from 'redux/contacts';
 
 
 
 export default function Form() {
-    const { data } = useFetchContactsQuery();
-    // const dispatch = useDispatch();
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
-    const [addContact, { isLoading }] = useAddContactMutation();
-    // const contacts = useSelector(getContacts);
 
-    // const inputNameId = nanoid();
-    // const inputNumberId = nanoid();
+    const contacts = useSelector(ContactsSelectors.getContacts);
+    const isRefreshing = useSelector(ContactsSelectors.getIsRefreshing);
+    const dispatch = useDispatch;
+
 
 
     const handleChangeName = e => {
@@ -34,10 +32,10 @@ export default function Form() {
 
     };
 
-    const handleSubmit = async e => {
+    const handleSubmit = e => {
         e.preventDefault();
         if (
-            data.find(
+            contacts.find(
                 contact =>
                     contact.name.toLocaleLowerCase() === name.toLocaleLowerCase()
             )
@@ -45,8 +43,8 @@ export default function Form() {
             toast.warning(`${name} is alredy in contacts`);
             return;
         }
-        await addContact({ name, number });
-        toast.success(`Contact is create!`);
+        dispatch(ContactsOperations.addContact({ name, number }));
+
 
         setName('');
         setNumber('');
@@ -77,17 +75,8 @@ export default function Form() {
                     value={number}
                     onChange={handleChangeNumber}
                 />
-                <button className={s.button} type="submit" disabled={isLoading}>Add Contact</button>
-                <ToastContainer
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                />
+                <button className={sBtn.btn + '' + s.button} type="submit" disabled={isRefreshing}>Add Contact</button>
+
             </form>
         </div>
 

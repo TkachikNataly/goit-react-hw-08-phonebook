@@ -1,19 +1,23 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { getFilter } from "redux/contacts/contactSelectors";
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import s from './ContactList.module.css';
 import ContactItem from './ContactItem/ContactItem';
-import { useFetchContactsQuery } from 'redux/contacts/contactsApi';
+import { ContactsSelectors, ContactsOperations } from 'redux/contacts';
 
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 
-export default function ContactList() {
-    const { data, error, isLoading } = useFetchContactsQuery();
-    const filter = useSelector(getFilter);
+export default function ContactList({ filter }) {
+    const contacts = useSelector(ContactsSelectors.getContacts);
+    const isLoading = useSelector(ContactsSelectors.getIsLoading);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(ContactsOperations.fetchContacts());
+    }, [dispatch]);
 
     const getVisibleContacts =
-        data && data.filter(contact =>
+        contacts && contacts.filter(contact =>
             contact.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())
         );
 
@@ -29,7 +33,7 @@ export default function ContactList() {
     // const dispatch = useDispatch();
     return (
         <div>
-            {error ? (
+            {isLoading ? (
                 <h2>
                     {error.data}
                 </h2>
@@ -52,10 +56,8 @@ export default function ContactList() {
     );
 }
 
-// ContactList.propTypes = {
-//     id: PropTypes.string,
-//     name: PropTypes.string,
-//     number: PropTypes.string,
-//     onDeleteContact: PropTypes.func,
-// };
+ContactList.propTypes = {
+    filter: PropTypes.string.isRequired
+
+};
 
