@@ -4,7 +4,7 @@ import Container from "components/Container/Container";
 import { AuthSelector } from 'redux/auth';
 
 export default function PablicRoute({ children, restricted = false }) {
-    const isLoggedIn = useSelector(AuthSelector.gegIsLoggedIn);
+    const isLoggedIn = useSelector(AuthSelector.getIsLoggedIn);
     const showNavigate = isLoggedIn && restricted;
     return (
         <>

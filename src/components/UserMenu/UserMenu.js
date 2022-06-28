@@ -13,7 +13,8 @@ export default function UserMenu() {
             <div className={s.btn}>
                 <button
                     type="button"
-                    onClick={() => dispatch(AuthOperations.logOut())}>
+                    onClick={() => dispatch(AuthOperations.logOut())}
+                >
                     logout
                 </button>
             </div>

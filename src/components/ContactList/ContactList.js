@@ -34,11 +34,8 @@ export default function ContactList({ filter }) {
     return (
         <div>
             {isLoading ? (
-                <h2>
-                    {error.data}
+                <h2>Loading...
                 </h2>
-            ) : isLoading ? (
-                <h2>Loading...</h2>
             ) : getVisibleContacts?.length ? (
                 <ul className={s.list}>
                     {getVisibleContacts.map(({ id, name, number }) => (
