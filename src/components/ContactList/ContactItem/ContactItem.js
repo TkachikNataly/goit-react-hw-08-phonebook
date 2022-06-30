@@ -73,19 +73,15 @@ export default function ContactItem({ id, name, number }) {
                 </>
             )}
             <div>
-                <div>
-                    <button className={s.button} type="button" onClick={handelChengeContact}>
-                        {changeContact ? 'Save' : 'Edit'}
-                    </button>
-                </div>
-                <div>
-                    <button className={s.button}
-                        type="button"
-                        onClick={() => dispatch(ContactsOperations.deleteContact(id))}
-                    >
-                        Delete
-                    </button>
-                </div>
+                <button className={s.button} type="button" onClick={handelChengeContact}>
+                    {changeContact ? 'Save' : 'Edit'}
+                </button>
+                <button className={s.button}
+                    type="button"
+                    onClick={() => dispatch(ContactsOperations.deleteContact(id))}
+                >
+                    Delete
+                </button>
             </div>
         </li>
     );
