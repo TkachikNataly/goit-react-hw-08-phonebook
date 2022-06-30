@@ -1,6 +1,8 @@
-import React from "react";
+import React from 'react';
+import sBtn from '../../App.module.css';
 import s from './UserMenu.module.css';
-import { useSelector, useDispatch } from "react-redux";
+import defaultAvatar from '../../images/default-avatar.png';
+import { useSelector, useDispatch } from 'react-redux';
 import { AuthOperations, AuthSelector } from 'redux/auth';
 
 export default function UserMenu() {
@@ -9,6 +11,12 @@ export default function UserMenu() {
 
     return (
         <div className={s.container}>
+            <img
+                className={s.avatar}
+                src={defaultAvatar}
+                alt="avatar"
+                width="32"
+            />
             <span className={s.text}>Welcome {email}</span>
             <div className={s.btn}>
                 <button

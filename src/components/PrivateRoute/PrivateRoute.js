@@ -1,8 +1,7 @@
-import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { AuthSelector } from 'redux/auth';
-import Container from "components/Container/Container";
-
+import Container from '../Container/Container';
 
 export default function PrivateRoute({ children }) {
     const isLoggedIn = useSelector(AuthSelector.getIsLoggedIn);

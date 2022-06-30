@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import Container from 'components/Container/Container';
+import Container from '../Container/Container';
 import s from './View.module.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { AuthOperations, AuthSelector } from 'redux/auth';
 import { NavLink } from 'react-router-dom';
-
 
 export default function LoginView() {
     const dispatch = useDispatch();
@@ -52,7 +51,7 @@ export default function LoginView() {
                         required
                     />
                 </label>
-                <div className={`${s.btn}`}>
+                <div className={s.btn}>
                     <button type="submit" disabled={isLoading}>
                         {isLoading ? 'Login...' : 'Login'}
                     </button>

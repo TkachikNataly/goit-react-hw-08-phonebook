@@ -1,13 +1,13 @@
-import { useState } from "react";
-import Container from "components/Container/Container";
+import { useState } from 'react';
+import Container from '../Container/Container';
 import s from './View.module.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import { AuthOperations, AuthSelector } from 'redux/auth';
 import { NavLink } from 'react-router-dom';
 
 export default function RegisterView() {
-    const dispatch = useDispatch();
+    const dispath = useDispatch();
     const isLoading = useSelector(AuthSelector.getIsLoading);
     const isError = useSelector(AuthSelector.getError);
 
@@ -17,7 +17,7 @@ export default function RegisterView() {
 
     const onSubmitForm = async e => {
         e.preventDefault();
-        dispatch(AuthOperations.register({ name, email, password }));
+        dispath(AuthOperations.register({ name, email, password }));
         if (!isError) {
             setName('');
             setEmail('');
@@ -65,11 +65,11 @@ export default function RegisterView() {
                 </label>
                 <div className={s.btn}>
                     <button type="submit" disabled={isLoading}>
-                        Sing up
+                        Sign up
                     </button>
                 </div>
                 <NavLink to="/login">To login form.</NavLink>
             </form>
         </Container>
-    )
+    );
 }

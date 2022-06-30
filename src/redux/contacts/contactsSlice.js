@@ -36,9 +36,11 @@ const contactsSlice = createSlice({
         [fetchContacts.rejected](state) {
             state.isLoading = false;
         },
+
         [deleteContact.fulfilled](state, { payload }) {
             state.contacts = state.contacts.filter(({ id }) => id !== payload);
         },
+
         [changeContact.fulfilled](state, { payload }) {
             state.contacts = state.contacts.map(contact =>
                 contact.id === payload.id ? payload : contact

@@ -1,6 +1,6 @@
-import axios from "axios";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
+import axios from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
 
 axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
@@ -34,7 +34,7 @@ export const deleteContact = createAsyncThunk(
     async contactId => {
         try {
             await axios.delete(`/contacts/${contactId}`);
-            toast.success(`Contact is delete`);
+            toast.success(`Contact is delete!`);
             return contactId;
         } catch (error) {
             console.log('deleteContact-error', error);
@@ -50,7 +50,7 @@ export const changeContact = createAsyncThunk(
                 name,
                 number,
             });
-            toast.success(`Contact was edited`);
+            toast.success(`Contact was edited!`);
             return data;
         } catch (error) {
             console.log('changeContact-error', error);
