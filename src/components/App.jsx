@@ -1,56 +1,72 @@
-// import { Route, Routes } from "react-router-dom";
-// import HomeView from "./View/HomeView";
-// import LoginView from "./View/LoginView";
-// import RegisterView from "./View/RegisterView";
-// import { useDispatch, useSelector } from "react-redux";
-// import { AuthOperations, AuthSelector } from 'redux/auth';
-// import { useEffect } from "react";
-// import Loader from "./Loader/Loader";
-// import PrivateRoute from "./PrivateRoute/PrivateRoute";
-// import PablicRoute from "./PablicRoute/PablicRoute";
-// import NotFoundView from "./View/NotFoundView";
+import { lazy, Suspense, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import SectionContainer from './SectionContainer';
+import AppBar from './AppBar';
+import { authOperations, authSelectors } from 'redux/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import PrivateRoute from './PrivateRoute';
+import PublicRoute from './PublicRoute';
+import Loader from './Loader/Loader';
 
-// export default function App() {
-//   const dispatch = useDispatch();
-//   const isRefreshing = useSelector(AuthSelector.getIsRefreshing);
+const HomePage = lazy(() => import('../pages/HomePage'));
+const LoginPage = lazy(() => import('../pages/LoginPage'));
+const RegisterPage = lazy(() => import('../pages/RegisterPage'));
+const ContactsPage = lazy(() => import('../pages/ContactsPage'));
 
-//   useEffect(() => {
-//     dispatch(AuthOperations.fetchCurrentUser());
-//   }, [dispatch]);
-//   return isRefreshing ? (
-//     <Loader />
-//   ) : (
-//     <Routes>
-//       <Route
-//         exat
-//         path="/"
-//         element={
-//           <PrivateRoute>
-//             <HomeView />
-//           </PrivateRoute>
-//         }
-//       />
-//       <Route
-//         path="login"
-//         element={
-//           <PablicRoute restricted>
-//             <LoginView />
-//           </PablicRoute>
-//         }
-//       />
-//       <Route
-//         path="register"
-//         element={
-//           <PablicRoute restricted>
-//             <RegisterView />
-//           </PablicRoute>
-//         }
-//       />
-//       <Route path="*" element={<NotFoundView />} />
-//     </Routes>
-//   );
+export default function App() {
+    const dispatch = useDispatch();
+    const isFetchingCurrentUser = useSelector(
+        authSelectors.getIsFetchingCurrentUser
+    );
 
+    useEffect(() => {
+        dispatch(authOperations.fetchCurrentUser());
+    }, [dispatch]);
 
-// }
+    return (
+        !isFetchingCurrentUser && (
+            <SectionContainer>
+                <AppBar />
+
+                <Suspense fallback={<Loader />}>
+                    <Routes>
+                        <Route
+                            path="/"
+                            element={
+                                <PublicRoute restricted redirectTo="/contacts">
+                                    <HomePage />
+                                </PublicRoute>
+                            }
+                        />
+                        <Route
+                            path="/login"
+                            element={
+                                <PublicRoute restricted redirectTo="/contacts">
+                                    <LoginPage />
+                                </PublicRoute>
+                            }
+                        />
+                        <Route
+                            path="/register"
+                            element={
+                                <PublicRoute restricted redirectTo="/contacts">
+                                    <RegisterPage />
+                                </PublicRoute>
+                            }
+                        />
+                        <Route
+                            path="/contacts"
+                            element={
+                                <PrivateRoute path="/contacts">
+                                    <ContactsPage />
+                                </PrivateRoute>
+                            }
+                        />
+                    </Routes>
+                </Suspense>
+            </SectionContainer>
+        )
+    );
+}
 
 
